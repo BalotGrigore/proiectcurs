@@ -1,10 +1,12 @@
-Pt proiect -> Cerințe:
+@Ro
+Pt proiect: 
+Cerințe:
 Realizarea unui automation framework pentru o pagină WEB (la alegere). În cadrul
 framework-ului se vor regăsi minim 5 teste automate. Framework-ul poate conține
 și teste de API sau DB.
-
 Realizarea unei prezentări .pptx sau .pdf în care se vor descrie framework-ul și TC-
 urile.
+
 Evaluarea proiectului:
 Testerul a ales o aplicație potrivită pentru a fi testată și a detaliat un plan de testare:
 Testerul a creat minim 5 scenarii de testare într-un tool de management al activității de testare:
@@ -14,12 +16,13 @@ Testerul a generat un raport al execuției tuturor scenariilor de testare:
 Testerul a aplicat tehnici de testare black box în efortul de testare:
 Testerul a testat funcționalitatea propriu-zisă din perspectiva unui utilizator final:
 Testerul a testat interfața pentru corectitudine și uzabilitate:
------------------
-For the project -> Requirements:
+
+@En
+For the project:
+Requirements:
 Creation of an automation framework for a WEB page (of your own chosing). Within
 framework there will be at least 5 automatic tests. The framework may contain
 and API or DB tests.
-
 Creation of a .pptx or .pdf presentation in which the framework and TC will be described
 
 Project evaluation:

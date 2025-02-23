@@ -225,12 +225,19 @@ public class BackboneClass {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        FixCookies();
+      
 
         WebElement elm = shadowRoot
                 .findElement(By.cssSelector("div > div > div.main > div > div:nth-child(5) > button"));
         spine.clickOnElement(elm);
+        
+        FixCookies();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         WebElement elm2 = shadowRoot
                 .findElement(By.cssSelector("div > div > div.main > div > div:nth-child(19) > div > button"));
         spine.clickOnElement(elm2);
@@ -242,4 +249,55 @@ public class BackboneClass {
                 "Nu ai cont? Nu-ți face griji!\nPoți crea unul în pasul următor.", elm3.getText());
 
     }
+
+    public void GeniusDeals() {
+        WebElement wait = spine.waitForElement(driver,
+                By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(4) > a"), 5, 2000);
+        assertNotNull(wait, "The element should be present in the DOM.");
+        driver.findElement(By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(4) > a")).click();
+        assertTrue("Nu suntem pe pagina corecta: Genius Deals ",driver.getCurrentUrl().contains("https://www.emag.ro/label-campaign/genius-deals"));
+    }
+
+    public void EasyBuyBack() {
+        try {
+            WebElement wait = spine.waitForElement(driver,
+            By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(5) > a"), 5, 2000);
+        
+            if (driver.findElement(By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(5) > a")).isDisplayed()) {
+                assertNotNull(wait, "The element should be present in the DOM.");
+                driver.findElement(By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(5) > a")).click();;
+            }
+            else {
+            driver.findElement(By.cssSelector("#navbar-aux-dropdown")).click();
+            driver.findElement(By.xpath("(//*[text()=\"Easy BuyBack \"])[2]")).click();
+            }
+        } catch (Exception e) {
+            System.out.println("Nu am putut da click pe Easy BuyBack");
+        }      
+        assertTrue("Nu suntem pe pagina corecta: Easy Buy Back ",driver.getCurrentUrl().contains("https://www.emag.ro/lps/emag-flip-buyback"));  
+    }
+
+    public void OferteleEmag() {
+        try {
+            WebElement wait = spine.waitForElement(driver,
+            By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(6) > a"), 5, 2000);
+        
+            if (driver.findElement(By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(6) > a")).isDisplayed()) {
+                assertNotNull(wait, "The element should be present in the DOM.");
+                driver.findElement(By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(6) > a")).click();;
+            }
+            else {
+            driver.findElement(By.cssSelector("#navbar-aux-dropdown")).click();
+            driver.findElement(By.xpath("(//*[text()=\"Ofertele eMAG\"])[2]")).click();
+            }
+        } catch (Exception e) {
+            System.out.println("Nu am putut da click pe Ofertele eMAG");
+        }
+        assertTrue("Nu suntem pe pagina corecta: Ofertele eMAG ",driver.getCurrentUrl().contains("https://www.emag.ro/nav/deals"));
+        
+    }
+
+
+    // body > div.ns-wrap-top-right > div > div > div > div > div.table-cell.col-xs-9 selector pentru confirmare faborite
+    // assert get text: Produsul a fost adaugat la Favorite
 }

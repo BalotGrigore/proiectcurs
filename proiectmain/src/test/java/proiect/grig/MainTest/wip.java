@@ -40,7 +40,7 @@ public class wip {
     System.out.println("Test 4 Start");
     CallBackbone.Openpage();
     CallBackbone.FixCookies();
-    CallBackbone.Resigilate_navigate();
+    CallBackbone.OferteleEmag();
     System.out.println("Test 4 Finished");
  // Am navigat prin meniul de produse si am accesat pagina de televizoare
 

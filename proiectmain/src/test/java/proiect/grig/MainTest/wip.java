@@ -19,8 +19,8 @@ public class wip {
         Staticfix2.teardown();
             } 
 
-    
-    public WebDriver driver = new ChromeDriver();
+    WebDriver driver;
+    //public WebDriver driver = new ChromeDriver();
             
     @Before
     public void setup() {    
@@ -36,15 +36,17 @@ public class wip {
 
      
 
-    // Test 3 incepe aici 
-    System.out.println("Test 3 Start");
+    // Test 2 incepe aici
+    System.out.println("Test 4 Start");
     CallBackbone.Openpage();
     CallBackbone.FixCookies();
-    CallBackbone.OfertaZilei_Navigate();
-    System.out.println("Test 3 Finished");
- // Am navigat catre Oferta zilei si accesat sectiunea de imbracaminte barbati
+    CallBackbone.Resigilate_navigate();
+    System.out.println("Test 4 Finished");
+ // Am navigat prin meniul de produse si am accesat pagina de televizoare
+
     }
 
+    
     @After
     
     public void teardown() {

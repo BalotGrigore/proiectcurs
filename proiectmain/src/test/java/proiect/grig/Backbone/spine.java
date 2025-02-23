@@ -32,6 +32,7 @@ public class spine {
         });
     }
 
+    // Moved FluentHelper functionality here as a static method
     public void assertNotNull(WebElement element)
     {
         if (element == null)

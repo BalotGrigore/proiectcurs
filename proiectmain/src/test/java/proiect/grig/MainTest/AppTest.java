@@ -10,7 +10,7 @@ import java.time.Duration;
 import proiect.grig.Backbone.BackboneClass;
 
 /**
- * Unit test for simple App.
+ * Unit test for simple App focusing on navigation in all the amin menu pages .
  */
 public class AppTest {
     
@@ -25,8 +25,8 @@ public class AppTest {
             }
         }
 
-    //public WebDriver driver;
-    public WebDriver driver = new ChromeDriver();
+    public WebDriver driver;
+    //public WebDriver driver = new ChromeDriver();
         
    @Before
     public void setup() {    
@@ -42,28 +42,30 @@ public class AppTest {
     public void testApp() {
         BackboneClass CallBackbone = new BackboneClass(driver);
 
-      // Test 1 incepe aici   
+      // Test 1 icepe aici
         System.out.println("Test 1 Start");
         CallBackbone.Openpage();
         CallBackbone.FixCookies();
         System.out.println("Test 1 Finished");
-     // Am deschis pagina si dat click pe cookies daca apar  
+      // Am deschis pagina si dat click pe cookies daca apar  
+      
      
-     // Test 2 incepe aici 
+     // Test 2 incepe aici
         System.out.println("Test 2 Start");
         CallBackbone.Openpage();
         CallBackbone.FixCookies();
         CallBackbone.NavAndClick();
         System.out.println("Test 2 Finished");
      // Am navigat prin meniul de produse si am accesat pagina de televizoare
+     
          
-     // Test 3 incepe aici 
+     // Test 3 incepe aici
         System.out.println("Test 3 Start");
         CallBackbone.Openpage();
         CallBackbone.FixCookies();
         CallBackbone.OfertaZilei_Navigate();
         System.out.println("Test 3 Finished");
-     // Am navigat catre Oferta zilei si accesat sectiunea de imbracaminte barbati
+     // Am navigat catre Oferta zilei si am verificat ca e pentru ziua curenta
 
      // Test 4 incepe aici 
         System.out.println("Test 4 Start");
@@ -79,7 +81,7 @@ public class AppTest {
         CallBackbone.FixCookies();
         CallBackbone.Genius();
         System.out.println("Test 5 Finished");
-  // Am navigat catre Genius page
+  // Am navigat catre Genius page si accesat sectiunea de Gaming 
     }
 
     @After

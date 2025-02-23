@@ -107,6 +107,15 @@ public class AppTest {
         // Am navigat catre OferteleEmag si am verificat ca suntem pe pagina corecta
         // folosind Pageurl
 
+        // Test 9 incepe aici
+        System.out.println("Test 9 Start");
+        CallBackbone.Openpage();
+        CallBackbone.FixCookies();
+        CallBackbone.NavAndClick();
+        CallBackbone.FavProduct();
+        System.out.println("Test 9 Finished");
+        // Am adaugat si sters produse la favorite, ama daugat produs in cos si am facut checkout pana la pagina de login
+
     }
 
     @After

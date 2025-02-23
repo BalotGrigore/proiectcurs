@@ -3,13 +3,20 @@ package proiect.grig.Backbone;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.Assert.assertFalse;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Duration;
+
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.openqa.selenium.By;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.By.ById;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 @SuppressWarnings("static-access")
 
@@ -192,9 +199,7 @@ public class BackboneClass {
                 .findElement(By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(2) > a"));
         resigilate.click();
         // we should be on https://www.emag.ro/resigilate?ref=hdr_resigilate page
-        System.out.println(driver.getCurrentUrl());
         driver.switchTo().window(driver.getWindowHandles().toArray()[1].toString());
-        System.out.println(driver.getCurrentUrl());
         WebElement wait2 = spine.waitForElement(driver, By.cssSelector(
                 "#main-container > section.page-section.page-listing-v2 > div > div.clearfix.pb-7 > div.page-container > div:nth-child(1) > div.listing-panel-heading.hidden-xs > div > div.listing-page-title.js-head-title"),
                 5, 2000);
@@ -297,7 +302,73 @@ public class BackboneClass {
         
     }
 
+    public void FavProduct() {
+        WebElement wait = spine.waitForElement(driver, By.cssSelector("#my_wishlist > i"), 5, 2000);
+        assertNotNull(wait, "The element should be present in the DOM.");
+        WebElement ele = waitForAndMoveToElement(
+                By.id(
+                        "my_wishlist"),
+                5, 2000);
+        assertNotNull(ele, "The element should be present in the DOM.");
+        assertTrue("Nu am dat hover corect", driver.findElement(By.xpath("//*[text()=\"Adauga produsele preferate la Favorite.\"]")).getText().contains("Adauga produsele preferate la Favorite."));
+        //Am asteptat sa vedem butonul de favorite, am dat hover si am verifica ca nu avem nici un produs adaugat
+        driver.findElement(By.xpath("//*[contains(@class, 'add-to-favorites btn')]")).click();
+        WebElement wait2 = spine.waitForElement(driver, By.cssSelector("body > div.ns-wrap-top-right > div > div > div > div > div.table-cell.col-xs-9"), 5, 500);
+        wait2.getText().contains("Produsul a fost adaugat la Favorite"); // notificare de pe site canda daugi produsul la favorite
+        System.out.println("Produsul a fost adaugat la Favorite");
+        assertTrue(driver.findElement(By.xpath("//*[text()=\"1\"]")).getText().contains("1")); //s-a incrementat counterul cu 1 pentru butonul de favorite
+        // Am dat click pe butonul de favorite si am verificat ca produsul a fost adaugat cu succes la favorite prin notificarile de pe site si am incermentat numarul de produse favorite cu 1
+        driver.findElement(By.xpath("(//*[contains(@class, 'add-to-favorites btn')])[2]")).click();
+        assertTrue(driver.findElement(By.xpath("//*[text()=\"2\"]")).getText().contains("2"));
+        // Am adaugat un al doilea produs la favorite si am verificat ca numarul de produse favorite a crescut cu 1 la un total de 2
+        System.out.println("Am adaugat 2 produse la favorite");
+        
+        WebElement ele2 = waitForAndMoveToElement(
+            By.id(
+                    "my_wishlist"),
+            5, 2000);
+        assertNotNull(ele2, "The element should be present in the DOM.");
+        
+        driver.findElement(By.xpath("//a[@href='/favorites?ref=ua_favorites']")).click();
+        WebElement waitfav = spine.waitForElement(driver,
+                By.xpath("//*[text()=\"Sterge\"]"), 5, 2000);
+        assertNotNull(waitfav, "The element should be present in the DOM.");
+        driver.findElement(By.xpath("//*[text()=\"Sterge\"]")).click();
+        System.out.println("Am sters un produs din favorite");
+        System.out.println("apasam submit la produsul 2");
+        WebElement waitfav2 = spine.waitForElement(driver,
+                By.xpath("//*[@id=\"list-of-favorites\"]/div/div/div/div[2]/div[2]/div/div[2]/div[2]/div[2]/form/button/i"), 5, 2000);
+        assertNotNull(waitfav2, "The element should be present in the DOM.");
+        driver.findElement(By.xpath("//*[@id=\"list-of-favorites\"]/div/div/div/div[2]/div[2]/div/div[2]/div[2]/div[2]/form/button/i")).click();
 
-    // body > div.ns-wrap-top-right > div > div > div > div > div.table-cell.col-xs-9 selector pentru confirmare faborite
-    // assert get text: Produsul a fost adaugat la Favorite
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        WebElement waitfav3 = spine.waitForElement(driver,
+                By.xpath("//*[@class='d-none d-sm-block']"), 5, 2000);
+        assertNotNull(waitfav3, "The element should be present in the DOM.");
+        assertTrue(driver.findElement(By.xpath("//*[@class='d-none d-sm-block']")).getText().contains("Produsul a fost adaugat in cos"));
+        WebElement waitfav4 = spine.waitForElement(driver,
+                By.xpath("//*[text()=\"Vezi detalii cos\"]"), 5, 2000);
+        assertNotNull(waitfav4, "The element should be present in the DOM.");
+        driver.findElement(By.xpath("//*[@class='btn btn-primary btn-sm btn-block']")).click();
+        WebElement waitfav5 = spine.waitForElement(driver,
+                By.xpath("//*[text()=\"Coșul meu\"]"), 5, 2000);
+        assertNotNull(waitfav5, "The element should be present in the DOM.");
+        assertTrue(driver.findElement(By.xpath("//*[text()=\"Coșul meu\"]")).getText().contains("Coșul meu"));
+        WebElement waitfav6 = spine.waitForElement(driver,
+                By.cssSelector("#cart-products > div > div.col-md-4.col-lg-3.main-cart-container-right > div.placeholder.order-summary-container > div > div.order-summary-actions"), 5, 2000);
+        assertNotNull(waitfav6, "The element should be present in the DOM.");
+        waitfav6.click();
+        System.out.println("Avem un produs in cosi si incercam sa il cumparam");
+        WebElement waitfav7 = spine.waitForElement(driver,
+                By.xpath("//*[text()=\"Introdu adresa de email\"]"), 5, 2000);
+        assertNotNull(waitfav7, "The element should be present in the DOM.");
+        assertTrue(driver.findElement(By.xpath("//*[text()=\"Introdu adresa de email\"]")).getText().contains("Introdu adresa de email"));
+        System.out.println("Am ajuns la pagina de Login");
+    }
+    
 }

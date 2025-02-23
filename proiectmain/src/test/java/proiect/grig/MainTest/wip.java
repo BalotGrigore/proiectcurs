@@ -13,12 +13,13 @@ public class wip {
 
      public static void main( String[] args )
     {
-        AppTest Staticfix2 = new AppTest();
+        wip Staticfix2 = new wip();
         Staticfix2.setup();
         Staticfix2.testApp();
         Staticfix2.teardown();
             } 
 
+    
     public WebDriver driver = new ChromeDriver();
             
     @Before
@@ -35,13 +36,13 @@ public class wip {
 
      
 
-     // Test 5 incepe aici 
-        System.out.println("Test 5 Start");
-        CallBackbone.Openpage();
-        CallBackbone.FixCookies();
-        CallBackbone.Genius();
-        System.out.println("Test 5 Finished");
-  // Am navigat catre Genius page
+    // Test 3 incepe aici 
+    System.out.println("Test 3 Start");
+    CallBackbone.Openpage();
+    CallBackbone.FixCookies();
+    CallBackbone.OfertaZilei_Navigate();
+    System.out.println("Test 3 Finished");
+ // Am navigat catre Oferta zilei si accesat sectiunea de imbracaminte barbati
     }
 
     @After

@@ -3,104 +3,106 @@ package proiect.grig.Backbone;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.Assert.assertFalse;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Duration;
-
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.By.ById;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 @SuppressWarnings("static-access")
 
-// mail:testgrigselenium@gmail.com
-// pass:testgrig123@test.com
-// passEmag:Testgrig123@test.com
-
 public class BackboneClass {
 
-    WebDriver driver;
-    spine spine;
+    WebDriver driver; // Instance of WebDriver
+    spine spine; // Instance of spine class
+    Elements elements; // Instance of Elements class
 
     public BackboneClass(WebDriver driver) {
-        this.driver = driver;
-        this.spine = new spine(driver);
+        this.driver = driver; // Initialize WebDriver
+        this.spine = new spine(driver); // Initialize spine
+        this.elements = new Elements(driver); // Initialize Element
 
     }
 
     public void Openpage() {
-        driver.get("https://www.emag.ro");
-        String pagetitle = driver.getTitle();
-        assertEquals("Nu suntem pe pagina corecta, check page URL", "eMAG.ro - Căutarea nu se oprește niciodată",
-                pagetitle);
-        System.out.println("Suntem pe pagina corecta");
+        if (driver.getCurrentUrl().contains("https://www.emag.ro")) {
+            System.out.println("Suntem deja pe pagina corecta emag.ro");
+            // We will check if we are already on the correct page
+        } else {
+            driver.get("https://www.emag.ro");
+            String pagetitle = driver.getTitle();
+            assertEquals("Nu suntem pe pagina corecta, check page URL", "eMAG.ro - Căutarea nu se oprește niciodată",
+                    pagetitle);
+            System.out.println("Am deschis pagina corecta emag.ro");
+            // If we are not on the correct page we will open it and check if we are on the
+            // correct page
+        }
     }
 
     public void FixCookies() {
         try {
-            WebElement cookieButton = spine.waitForElement(driver, By.cssSelector(
-                    "body > div.gdpr-cookie-banner.js-gdpr-cookie-banner.py-2.px-0.show > div > div.col-xs-12.col-sm-5.col-md-4.col-lg-3.cookie-banner-buttons > button.btn.btn-primary.btn-block.js-accept.gtm_h76e8zjgoo"),
-                    5, 2000);
-            cookieButton.click();
-            System.out.println("Am dat click pe Accept Cookies");
+            if (elements.cookieButton.isDisplayed()) {
+                try {
+                    // Wait for the cookies to appear before clicking
+                    spine.waitForElementToBeClickable(elements.cookieButton);
+                    // Click on accept cokies button
+                    spine.clickOnElement(elements.cookieButton);
+                    System.out.println("Am dat click pe Accept Cookies");
+                } catch (Exception e) {
+                }
+            } else {
+                try {
+                    Thread.sleep(2000);
+                    spine.clickOnElement(elements.cookieButton);
+                    System.out.println("Am dat click pe Accept Cookies dupa implicit wait");
+                } catch (Exception e) {
+                }
+            }
         } catch (Exception e) {
-            System.out.println("Nu am avut cookies pop-up this time");
         }
     }
 
-    // Helper method for NavAndClick to wait for and move to an element
-    public WebElement waitForAndMoveToElement(By locator, int timeoutSeconds, int pollingMillis) {
-        WebElement element = spine.waitForElement(driver, locator, timeoutSeconds, pollingMillis);
-        spine.assertNotNull(element);
-        new Actions(driver).moveToElement(element).perform();
-        return element;
-    }
-
     public void NavAndClick() {
+        // When runing only this method/test alone we will make sure we have
+        // pre-requesite
+        Openpage();
+        FixCookies();
+
         // Step 1: Wait for and move to the first element
-        waitForAndMoveToElement(By.cssSelector("#auxiliary > div > div > ul:nth-child(1) > li"), 5, 2000);
+        spine.waitForAndMoveToWebElement(elements.Produse, 5, 2000);
 
         // Step 2: Wait for the next element and move to it
-        waitForAndMoveToElement(By.xpath("//*[text()='TV, Audio-Video & Foto']"), 5, 2000);
+        spine.waitForAndMoveToWebElement(elements.TVAudioVideoFoto, 5, 2000);
 
         // Step 3: Wait for the next element and click on it
-        WebElement ele3 = waitForAndMoveToElement(
-                By.cssSelector(
-                        "body > div.main-container-outer > div.megamenu-container.megamenu-always-open > div > div.megamenu-details > div:nth-child(3) > div.megamenu-details-department-items > ul > li:nth-child(1) > div.megamenu-group.collapse.megamenu-group-4078 > a:nth-child(1)"),
-                5, 2000);
-
-        spine.clickOnElement(ele3);
+        spine.waitForAndMoveToWebElement(elements.Televizoare, 5, 2000).click();
 
         // Step 4: Validate the page title
         String pageTitle = driver.getTitle();
-        assertEquals("Nu suntem pe pagina corecta, check page URL pentru Televizoare", 
+        assertEquals("Nu suntem pe pagina corecta, check page URL pentru Televizoare",
                 "Televizoare. Cumpara televizorul potrivit. Vezi oferte - eMAG.ro", pageTitle);
-        System.out.println("Suntem pe pagina cu Televizoare");
+        System.out.println("Am navigat cu succes pe pagina cu Televizoare");
     }
 
     public void OfertaZilei_Navigate() {
+        // When runing only this method/test alone we will make sure we have
+        // pre-requesite
+        Openpage();
+        FixCookies();
+
         // Wait for the "Oferta Zilei" element to be present
-        WebElement wait = spine.waitForElement(driver,
-                By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(1) > a"), 5, 2000);
+        WebElement wait = spine.waitForWebElement(driver, elements.OfertaZilei, 5, 2000);
         assertNotNull(wait, "The element should be present in the DOM.");
 
         // Click on the "Oferta Zilei" element
-        WebElement ofertazilei = driver.findElement(
-                By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(1) > a"));
-        ofertazilei.click();
+        elements.OfertaZilei.click();
 
         // Verify that the current URL contains the expected path
         assertTrue("Nu suntem pe pagina de Oferta Zilei",
                 driver.getCurrentUrl().contains("https://www.emag.ro/label-campaign/oferta-zilei"));
-        System.out.println("Am navigat pe Pagina Oferta Zilei");
-        System.out.println("Verificăm dacă oferta este pentru ziua de azi");
+        System.out.println("Am navigat pe pagina Oferta Zilei");
 
         // Get the current URL
         String currentUrl = driver.getCurrentUrl();
@@ -109,8 +111,8 @@ public class BackboneClass {
         LocalDate currentDate = LocalDate.now();
         int dayOfMonth = currentDate.getDayOfMonth();
         int year = currentDate.getYear();
-        String romanianMonth = getRomanianMonth(currentDate.getMonthValue());
-        String romanianWeekday = getRomanianDayOfWeek(currentDate.getDayOfWeek());
+        String romanianMonth = spine.getRomanianMonth(currentDate.getMonthValue());
+        String romanianWeekday = spine.getRomanianDayOfWeek(currentDate.getDayOfWeek());
 
         // Convert numerical values to strings
         String expectedDay = String.valueOf(dayOfMonth);
@@ -133,242 +135,342 @@ public class BackboneClass {
             throw new AssertionError("Offer is for the wrong day of the week. Expected weekday: " + romanianWeekday);
         }
 
-        System.out.println("All assertions passed: The offer URL matches the current date details.");
-    }
-
-    // Convert month number to its Romanian name without diacritics
-    private String getRomanianMonth(int month) {
-        switch (month) {
-            case 1:
-                return "ianuarie";
-            case 2:
-                return "februarie";
-            case 3:
-                return "martie";
-            case 4:
-                return "aprilie";
-            case 5:
-                return "mai";
-            case 6:
-                return "iunie";
-            case 7:
-                return "iulie";
-            case 8:
-                return "august";
-            case 9:
-                return "septembrie";
-            case 10:
-                return "octombrie";
-            case 11:
-                return "noiembrie";
-            case 12:
-                return "decembrie";
-            default:
-                return "";
-        }
-    }
-
-    // Convert DayOfWeek to its Romanian name without diacritics
-    private String getRomanianDayOfWeek(DayOfWeek day) {
-        switch (day) {
-            case MONDAY:
-                return "luni";
-            case TUESDAY:
-                return "marti";
-            case WEDNESDAY:
-                return "miercuri";
-            case THURSDAY:
-                return "joi";
-            case FRIDAY:
-                return "vineri";
-            case SATURDAY:
-                return "sambata";
-            case SUNDAY:
-                return "duminica";
-            default:
-                return "";
-        }
+        // Print success message
+        System.out.println("Am verificat cu succes ca Oferta Zilei este pentru ziua de azi: " + expectedDay + " "
+                + romanianMonth + " " + expectedYear + " (" + romanianWeekday + ")");
     }
 
     public void Resigilate_navigate() {
+        // When runing only this method/test alone we will make sure we have
+        // pre-requesite
+        Openpage();
+        FixCookies();
+
         // Wait for the "Resigilate" element to be present amd go to new page
-        WebElement wait = spine.waitForElement(driver,
-                By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(2) > a"), 5, 2000);
+        WebElement wait = spine.waitForWebElement(driver, elements.Resigilate, 5, 2000);
         assertNotNull(wait, "The element should be present in the DOM.");
-        WebElement resigilate = driver
-                .findElement(By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(2) > a"));
-        resigilate.click();
-        // we should be on https://www.emag.ro/resigilate?ref=hdr_resigilate page
+
+        // Click on the "Resigilate" element
+        elements.Resigilate.click();
+
+        // We need to switch to the new window
         driver.switchTo().window(driver.getWindowHandles().toArray()[1].toString());
-        WebElement wait2 = spine.waitForElement(driver, By.cssSelector(
-                "#main-container > section.page-section.page-listing-v2 > div > div.clearfix.pb-7 > div.page-container > div:nth-child(1) > div.listing-panel-heading.hidden-xs > div > div.listing-page-title.js-head-title"),
-                5, 2000);
+
+        // Wait for the element to be present on the new page
+        WebElement wait2 = spine.waitForWebElement(driver, elements.ProduseResigilateBigText, 5, 2000);
         assertNotNull(wait2, "The element should be present in the DOM.");
-        WebElement textResigilate = driver.findElement(By.cssSelector("#main-container > section.page-section.page-listing-v2 > div > div.page-header > div.breadcrumb-outer-holder.breadcrumb-lighten.js-breadcrumb-holder > div > ol > li"));
-        assertEquals("The element should be present in the DOM.", textResigilate.getText(), "Produse resigilate");
-        assertEquals("Nu suntem pe pagina de Oferta Zilei","Produse resigilate - eMAG.ro", driver.getTitle());
+
+        // Verify we are on the correct page by checking for an element and the page
+        // title
+        assertEquals("The element should be present in the DOM.", elements.ProduseResigilateSmallText.getText(),
+                "Produse resigilate");
+        assertEquals("Nu suntem pe pagina de Produse resigilate", "Produse resigilate - eMAG.ro", driver.getTitle());
+        System.out.println("Suntem pe pagina de Produse resigilate");
     }
 
-
-
     public void Genius() {
-        WebElement wait = spine.waitForElement(driver,
-                By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(3) > a"), 5, 2000);
+        // When runing only this method/test alone we will make sure we have
+        // pre-requesite
+        Openpage();
+        FixCookies();
+
+        // Wait for the "Genius" element to be present
+        WebElement wait = spine.waitForWebElement(driver, elements.Genius, 5, 2000);
         assertNotNull(wait, "The element should be present in the DOM.");
-        WebElement Genius = driver
-                .findElement(By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(3) > a"));
-        spine.clickOnElement(Genius);
+
+        // Click on the "Genius" element
+        spine.clickOnElement(elements.Genius);
+
+        // Get the shadow host element
         WebElement shadowHost = driver.findElement(By.tagName("emag-genius"));
         SearchContext shadowRoot = shadowHost.getShadowRoot();
         String GeniusTitle = driver.getTitle();
         assertEquals("Nu suntem pe pagina de Oferta Zilei",
                 "Genius: livrare gratuită și oferte exclusive pe eMAG, Tazz, Fashion Days și Freshful - eMAG.ro",
                 GeniusTitle);
+        System.out.println("Am dat click pe Genius si am gasit shadow root element");
 
+        // Wait for the page to load
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-      
 
+        // Click on the "Încearcă gratuit 3 luni" button
         WebElement elm = shadowRoot
                 .findElement(By.cssSelector("div > div > div.main > div > div:nth-child(5) > button"));
         spine.clickOnElement(elm);
-        
+        System.out.println("Am apasat pe primul buton Încearcă gratuit 3 luni ");
+
+        // Accept cookies if needed
         FixCookies();
+
+        // Wait for the page to load
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        // Scroll to and drag element to change price
+        WebElement GreenScroll = shadowRoot.findElement(By.cssSelector(
+                "div > div > div.main > div > div._savingsCalculator_racfl_1._savingsCalculator_1b9w7_161 > fieldset > div:nth-child(5) > label > div._savingsCalculatorInput_682cl_1._input_racfl_42 > input[type=range]"));
+        spine.moveToElement(GreenScroll);
+        // Get initial price and parse to double
+        WebElement InitialPrice = shadowRoot.findElement(By.cssSelector(
+                "div > div > div.main > div > div._savingsCalculator_racfl_1._savingsCalculator_1b9w7_161 > div._outputPrice_racfl_53 > span > span > span > span:nth-child(1)"));
+        String InitialPriceValue = InitialPrice.getText();
+        double InitialPriceValueDouble = Double.parseDouble(InitialPriceValue);
+
+        // Move green slider
+        spine.moveSlider(GreenScroll, -50);
+
+        // Get modified price and parse to double
+        WebElement ChangedPrice = shadowRoot.findElement(By.cssSelector(
+                "div > div > div.main > div > div._savingsCalculator_racfl_1._savingsCalculator_1b9w7_161 > div._outputPrice_racfl_53 > span > span > span > span:nth-child(1)"));
+        String ChangedPriceValue = ChangedPrice.getText();
+        double ChangedPricePriceValueDouble = Double.parseDouble(ChangedPriceValue);
+
+        // Compare Price
+        boolean statement = InitialPriceValueDouble != ChangedPricePriceValueDouble;
+        assertTrue("Price didn't change", statement);
+        System.out.println("Am dat drag in stanga la Green slider si am modificat pretul");
+
+        // Click on the "Încearcă gratuit 3 luni" button2
         WebElement elm2 = shadowRoot
                 .findElement(By.cssSelector("div > div > div.main > div > div:nth-child(19) > div > button"));
         spine.clickOnElement(elm2);
+        System.out.println("Am gasit si apasat pe al doilea button \"Încearcă gratuit 3 luni\"");
+
+        // Navigate to page https://auth.emag.ro/user/login and check element to be
+        // present
         WebElement wait3 = spine.waitForElement(driver, By.xpath("//*[text()=\"Nu ai cont? Nu-ți face griji!\"]"), 5,
                 2000);
         spine.assertNotNull(wait3);
         WebElement elm3 = driver.findElement(By.xpath("//*[text()=\"Nu ai cont? Nu-ți face griji!\"]"));
         assertEquals("Nu suntem pe login page redirect from genius page",
                 "Nu ai cont? Nu-ți face griji!\nPoți crea unul în pasul următor.", elm3.getText());
+        System.out.println("Am ajuns pe pagina de user login de la emag");
 
     }
 
     public void GeniusDeals() {
-        WebElement wait = spine.waitForElement(driver,
-                By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(4) > a"), 5, 2000);
+        // When runing only this method/test alone we will make sure we have
+        // pre-requesite
+        Openpage();
+        FixCookies();
+
+        // Wait for Genius Deals main menu button to be visible
+        WebElement wait = spine.waitForWebElement(driver, elements.GeniusDeals, 5, 2000);
         assertNotNull(wait, "The element should be present in the DOM.");
-        driver.findElement(By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(4) > a")).click();
-        assertTrue("Nu suntem pe pagina corecta: Genius Deals ",driver.getCurrentUrl().contains("https://www.emag.ro/label-campaign/genius-deals"));
+
+        // CLick on the Genius deals main menu button and verifiy we are on the correct
+        // page
+        spine.clickOnElement(elements.GeniusDeals);
+        assertTrue("Nu suntem pe pagina corecta: Genius Deals ",
+                driver.getCurrentUrl().contains("https://www.emag.ro/label-campaign/genius-deals"));
+        System.out.println("Suntem pe pagina de Genius Deals");
     }
 
     public void EasyBuyBack() {
+        // When runing only this method/test alone we will make sure we have
+        // pre-requesite
+        Openpage();
+        FixCookies();
+
         try {
-            WebElement wait = spine.waitForElement(driver,
-            By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(5) > a"), 5, 2000);
-        
-            if (driver.findElement(By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(5) > a")).isDisplayed()) {
+            // We check to see if the element is visible in the main menu without dropdown
+            // and also act as a pageLoadre check
+            WebElement wait = spine.waitForWebElement(driver, elements.EasyBuyBack, 5, 2000);
+
+            // If the EasyBuyBack element is displayed we will click it
+            if (elements.EasyBuyBack.isDisplayed()) {
                 assertNotNull(wait, "The element should be present in the DOM.");
-                driver.findElement(By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(5) > a")).click();;
-            }
-            else {
-            driver.findElement(By.cssSelector("#navbar-aux-dropdown")).click();
-            driver.findElement(By.xpath("(//*[text()=\"Easy BuyBack \"])[2]")).click();
+                spine.clickOnElement(elements.EasyBuyBack);
+                System.out.println("Am dat click pe Easy BuyBack din main menu");
+
+                // Else we will try dropdown method
+            } else {
+                handleDropdownClick();
             }
         } catch (Exception e) {
+            System.out.println("Elementul EasyBuyBack nu a fost gasit in timpul alocat. Incercam cu dropdown.");
+            handleDropdownClick();
+        }
+    }
+
+    public void handleDropdownClick() {
+        // When runing only this method/test alone we will make sure we have
+        // pre-requesite
+        Openpage();
+        FixCookies();
+
+        try {
+            spine.clickOnElement(elements.VeziMaiMult); // open dropdown menu
+
+            // During testing we discovered that if navigating from specific pages this
+            // selector will change so we have 2 version to click on it
+            // We will check for the first version of selector being displayed and click it
+            if (elements.EasyBuyBackDropdown1.isDisplayed()) {
+                spine.clickOnElement(elements.EasyBuyBackDropdown1);
+                System.out.println("Am dat click pe Easy BuyBack cu dropdown ver1");
+
+                // If the first option will fail then
+                // We will use the second selector and click it
+            } else {
+                spine.clickOnElement(elements.EasyBuyBackDropdown2);
+                System.out.println("Am dat click pe Easy BuyBack cu dropdown ver2");
+            }
+        }
+
+        // If everything fails and we can't click on the button in any way we throw this
+        // exception with specific error message
+        catch (Exception e) {
             System.out.println("Nu am putut da click pe Easy BuyBack");
-        }      
-        assertTrue("Nu suntem pe pagina corecta: Easy Buy Back ",driver.getCurrentUrl().contains("https://www.emag.ro/lps/emag-flip-buyback"));  
+        }
+
+        // A final validation we arrived on the correct page
+        assertTrue("Nu suntem pe pagina corecta: Easy Buy Back ",
+                driver.getCurrentUrl().contains("https://www.emag.ro/lps/emag-flip-buyback"));
     }
 
     public void OferteleEmag() {
+        // When runing only this method/test alone we will make sure we have
+        // pre-requesite
+        Openpage();
+        FixCookies();
+
         try {
-            WebElement wait = spine.waitForElement(driver,
-            By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(6) > a"), 5, 2000);
-        
-            if (driver.findElement(By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(6) > a")).isDisplayed()) {
-                assertNotNull(wait, "The element should be present in the DOM.");
-                driver.findElement(By.cssSelector("#auxiliary > div > div > ul:nth-child(3) > li:nth-child(6) > a")).click();;
-            }
-            else {
-            driver.findElement(By.cssSelector("#navbar-aux-dropdown")).click();
-            driver.findElement(By.xpath("(//*[text()=\"Ofertele eMAG\"])[2]")).click();
-            }
+            // Wait for the "Ofertele eMAG" button in the main menu to be visible and
+            // interactable
+            WebElement wait = spine.waitForWebElement(driver, elements.OferteleEmag, 5, 2000);
+            assertNotNull(wait, "The element should be present in the DOM."); // Ensure the element is found
+
+            // Click on "Ofertele eMAG" from the main menu
+            spine.clickOnElement(elements.OferteleEmag);
+            System.out.println("Am dat click pe OferteleEmag din main menu");
+
         } catch (Exception e) {
-            System.out.println("Nu am putut da click pe Ofertele eMAG");
+            // If clicking the main menu button fails, attempt to use the dropdown
+            System.out.println("Nu am putut da click pe Ofertele eMAG, incercam cu Dropdown");
         }
-        assertTrue("Nu suntem pe pagina corecta: Ofertele eMAG ",driver.getCurrentUrl().contains("https://www.emag.ro/nav/deals"));
-        
+
+        try {
+            // Click on the "Vezi Mai Mult" button to expand the dropdown menu
+            spine.clickOnElement(elements.VeziMaiMult);
+
+            // Check if the first dropdown version of "Ofertele eMAG" is visible
+            if (elements.OferteleEmagDropdown.isDisplayed()) {
+                spine.clickOnElement(elements.OferteleEmagDropdown);
+                System.out.println("Am dat click pe OferteleEmag cu dropdown ver1");
+
+            } else {
+                // If the first dropdown option is not available, click on the second version
+                spine.clickOnElement(elements.OferteleEmagDropdown2);
+                System.out.println("Am dat click pe OferteleEmag cu dropdown ver2");
+            }
+
+        } catch (Exception e) {
+            // Handle the failure of clicking the dropdown options
+            System.out.println("Nu am putut da click pe Ofertele eMAG din dropdown");
+        }
+
+        // Validate that the user is redirected to the correct "Ofertele eMAG" page
+        assertTrue("Nu suntem pe pagina corecta: Ofertele eMAG ",
+                driver.getCurrentUrl().contains("https://www.emag.ro/nav/deals"));
+        System.out.println("Suntem pe pagina Ofertele eMAG");
     }
 
     public void FavProduct() {
-        WebElement wait = spine.waitForElement(driver, By.cssSelector("#my_wishlist > i"), 5, 2000);
-        assertNotNull(wait, "The element should be present in the DOM.");
-        WebElement ele = waitForAndMoveToElement(
-                By.id(
-                        "my_wishlist"),
-                5, 2000);
-        assertNotNull(ele, "The element should be present in the DOM.");
-        assertTrue("Nu am dat hover corect", driver.findElement(By.xpath("//*[text()=\"Adauga produsele preferate la Favorite.\"]")).getText().contains("Adauga produsele preferate la Favorite."));
-        //Am asteptat sa vedem butonul de favorite, am dat hover si am verifica ca nu avem nici un produs adaugat
-        driver.findElement(By.xpath("//*[contains(@class, 'add-to-favorites btn')]")).click();
-        WebElement wait2 = spine.waitForElement(driver, By.cssSelector("body > div.ns-wrap-top-right > div > div > div > div > div.table-cell.col-xs-9"), 5, 500);
-        wait2.getText().contains("Produsul a fost adaugat la Favorite"); // notificare de pe site canda daugi produsul la favorite
-        System.out.println("Produsul a fost adaugat la Favorite");
-        assertTrue(driver.findElement(By.xpath("//*[text()=\"1\"]")).getText().contains("1")); //s-a incrementat counterul cu 1 pentru butonul de favorite
-        // Am dat click pe butonul de favorite si am verificat ca produsul a fost adaugat cu succes la favorite prin notificarile de pe site si am incermentat numarul de produse favorite cu 1
-        driver.findElement(By.xpath("(//*[contains(@class, 'add-to-favorites btn')])[2]")).click();
-        assertTrue(driver.findElement(By.xpath("//*[text()=\"2\"]")).getText().contains("2"));
-        // Am adaugat un al doilea produs la favorite si am verificat ca numarul de produse favorite a crescut cu 1 la un total de 2
-        System.out.println("Am adaugat 2 produse la favorite");
-        
-        WebElement ele2 = waitForAndMoveToElement(
-            By.id(
-                    "my_wishlist"),
-            5, 2000);
-        assertNotNull(ele2, "The element should be present in the DOM.");
-        
-        driver.findElement(By.xpath("//a[@href='/favorites?ref=ua_favorites']")).click();
-        WebElement waitfav = spine.waitForElement(driver,
-                By.xpath("//*[text()=\"Sterge\"]"), 5, 2000);
-        assertNotNull(waitfav, "The element should be present in the DOM.");
-        driver.findElement(By.xpath("//*[text()=\"Sterge\"]")).click();
-        System.out.println("Am sters un produs din favorite");
-        System.out.println("apasam submit la produsul 2");
-        WebElement waitfav2 = spine.waitForElement(driver,
-                By.xpath("//*[@id=\"list-of-favorites\"]/div/div/div/div[2]/div[2]/div/div[2]/div[2]/div[2]/form/button/i"), 5, 2000);
-        assertNotNull(waitfav2, "The element should be present in the DOM.");
-        driver.findElement(By.xpath("//*[@id=\"list-of-favorites\"]/div/div/div/div[2]/div[2]/div/div[2]/div[2]/div[2]/form/button/i")).click();
 
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        // We will naviagte or mmake sure we are on the emag.ro page
+        Openpage();
+        FixCookies();
+
+        // Check if we are on the Televizoare page or navigate there if not the case
+        if (driver.getTitle().contains("Televizoare. Cumpara televizorul potrivit. Vezi oferte - eMAG.ro")) {
+            System.out.println("Suntem deja pe pagina de televizoare pe pagina cu Televizoare");
+        } else {
+            NavAndClick();
         }
 
-        WebElement waitfav3 = spine.waitForElement(driver,
-                By.xpath("//*[@class='d-none d-sm-block']"), 5, 2000);
-        assertNotNull(waitfav3, "The element should be present in the DOM.");
-        assertTrue(driver.findElement(By.xpath("//*[@class='d-none d-sm-block']")).getText().contains("Produsul a fost adaugat in cos"));
-        WebElement waitfav4 = spine.waitForElement(driver,
-                By.xpath("//*[text()=\"Vezi detalii cos\"]"), 5, 2000);
-        assertNotNull(waitfav4, "The element should be present in the DOM.");
-        driver.findElement(By.xpath("//*[@class='btn btn-primary btn-sm btn-block']")).click();
-        WebElement waitfav5 = spine.waitForElement(driver,
-                By.xpath("//*[text()=\"Coșul meu\"]"), 5, 2000);
-        assertNotNull(waitfav5, "The element should be present in the DOM.");
-        assertTrue(driver.findElement(By.xpath("//*[text()=\"Coșul meu\"]")).getText().contains("Coșul meu"));
-        WebElement waitfav6 = spine.waitForElement(driver,
-                By.cssSelector("#cart-products > div > div.col-md-4.col-lg-3.main-cart-container-right > div.placeholder.order-summary-container > div > div.order-summary-actions"), 5, 2000);
-        assertNotNull(waitfav6, "The element should be present in the DOM.");
-        waitfav6.click();
-        System.out.println("Avem un produs in cosi si incercam sa il cumparam");
-        WebElement waitfav7 = spine.waitForElement(driver,
-                By.xpath("//*[text()=\"Introdu adresa de email\"]"), 5, 2000);
-        assertNotNull(waitfav7, "The element should be present in the DOM.");
-        assertTrue(driver.findElement(By.xpath("//*[text()=\"Introdu adresa de email\"]")).getText().contains("Introdu adresa de email"));
+        // Wait and hover over favorite button and checked that it's empty
+        spine.waitForAndMoveToWebElement(elements.FavoriteButton,
+                5, 2000);
+        assertTrue("Nu am dat hover corect",
+                elements.TextFavoriteIsEmpty.getText().contains("Adauga produsele preferate la Favorite."));
+
+        // Add first product on page product to favorite by pressing on the favorite
+        // button of that product
+        spine.clickOnElement(elements.ProductFavButton);
+
+        // Check notification that product was added to favorite
+        WebElement wait2 = spine.waitForWebElement(driver, elements.AddedToFavNotification, 5,
+                500);
+        wait2.getText().contains("Produsul a fost adaugat la Favorite");
+        System.out.println("Produsul a fost adaugat la Favorite");
+
+        // Favorite counter was incremented by 1
+        assertTrue(elements.FavBtnIncremented1.getText().contains("1"));
+        System.out.println("Counter produse favorite este 1");
+
+        // Add second product to favorite
+        spine.clickOnElement(elements.ProductFavButton2);
+        System.out.println("Am adaugat 2 produse la favorite");
+
+        // Favorite counter was incremented by 1 and now is 2
+        assertTrue(elements.FavBtnIncremented2.getText().contains("2"));
+        System.out.println("Counter produse favorite este 2");
+
+        // Wait and hover over favorite button
+        spine.waitForAndMoveToWebElement(elements.FavoriteButton,
+                5, 2000);
+
+        // Clickon button "Vezi toate produsele din favorite"
+        elements.SeeFavProducts.click();
+
+        // Wait for element and click on it to delete a product from favorite
+        spine.waitForWebElement(driver, elements.DeleteProductFromFav, 5, 2000);
+
+        // Delete a product from the list
+        spine.clickOnElement(elements.DeleteProductFromFav);
+        System.out.println("Am sters un produs din favorite");
+        System.out.println("Aduga produsul ramas in cos");
+
+        // Wait for Add to cart button to be vislible and click on it
+        spine.waitForWebElement(driver, elements.AddToCart,
+                5, 2000);
+        spine.clickOnElement(elements.AddToCart);
+        System.out.println("Am dat click pe butonul de adugat produsul in cos");
+
+        // Wait for element containing specific text "Produsul a fost adaugat in cos"
+        spine.waitForWebElement(driver, elements.ProductAddedToCartText, 5, 2000);
+        assertTrue(elements.ProductAddedToCartText.getText().contains("Produsul a fost adaugat in cos"));
+
+        // Product was added to cart success message
+        System.out.println("Produsul a fost adaugat in cos");
+
+        // Wait for Vezi detali Cos text and click on Vezi detali Cos button
+        spine.waitForWebElement(driver, elements.VeziDetaliiCosText, 5, 2000);
+        spine.clickOnElement(elements.VeziDetaliiCosButton);
+
+        // Success message
+        System.out.println("Am dat click pe Vezi detalii cos");
+
+        // Validat we are on the order page
+        spine.waitForWebElement(driver, elements.CosulMeuText, 5, 2000);
+        assertTrue(elements.CosulMeuText.getText().contains("Coșul meu"));
+        System.out.println("Am ajuns la pagina de cos");
+
+        // Press on continue button and try to ckeckout
+        System.out.println("Incercam sa apasam pe butonul de continua");
+        spine.waitForWebElement(driver, elements.ContinuaBtn, 5, 2000);
+        spine.clickOnElement(elements.ContinuaBtn);
+
+        // We are redirected to the register page because we are not logged in the site
+        spine.waitForWebElement(driver, elements.LoginPageText, 5, 2000);
+        assertTrue(elements.LoginPageText.getText().contains("Introdu adresa de email"));
         System.out.println("Am ajuns la pagina de Login");
     }
-    
 }

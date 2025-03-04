@@ -21,6 +21,37 @@
     <jacoco.unit-tests.limit.method-complexity>5</jacoco.unit-tests.limit.method-complexity>
   </properties>
   <dependencies>
+    
+     <!-- Cucumber Java -->
+    <dependency>
+        <groupId>io.cucumber</groupId>
+        <artifactId>cucumber-java</artifactId>
+        <version>7.15.0</version>
+    </dependency>
+
+    <!-- Cucumber JUnit -->
+    <dependency>
+        <groupId>io.cucumber</groupId>
+        <artifactId>cucumber-junit</artifactId>
+        <version>7.15.0</version>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- Cucumber TestNG (if you prefer TestNG instead of JUnit) -->
+    <dependency>
+        <groupId>io.cucumber</groupId>
+        <artifactId>cucumber-testng</artifactId>
+        <version>7.15.0</version>
+    </dependency>
+
+    <!-- Cucumber PicoContainer (For Dependency Injection, Optional) -->
+    <dependency>
+        <groupId>io.cucumber</groupId>
+        <artifactId>cucumber-picocontainer</artifactId>
+        <version>7.15.0</version>
+        <scope>test</scope>
+    </dependency>
+    
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

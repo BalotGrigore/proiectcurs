@@ -35,16 +35,11 @@ public class wip {
         BackboneClass CallBackbone = new BackboneClass(driver);
 
      
-
-    // Test 2 incepe aici
-    System.out.println("Test 4 Start");
-    CallBackbone.Openpage();
-    CallBackbone.FixCookies();
-    CallBackbone.NavAndClick();
-    CallBackbone.FavProduct();
-    System.out.println("Test 4 Finished");
- // Am navigat prin meniul de produse si am accesat pagina de televizoare
-
+        
+      CallBackbone.FavProduct();
+        
+        
+        
     }
 
     

@@ -4,5 +4,12 @@
     "editor.defaultFormatter": null,
     "[java]": {
         "editor.defaultFormatter": "redhat.java"
-    }
+    },
+    "cucumberautocomplete.steps": [
+        "proiectmain/src/test/java/stepDefinitions/*.java"        
+    ],
+    "cucumberautocomplete.syncfeatures": "proiectmain/src/test/Resources/Features/*.feature",
+    "cucumberautocomplete.strictGherkinCompletion": true,
+    "cucumberautocomplete.smartSnippets": true,
+    "cucumberautocomplete.stepsInvariants": true
 }

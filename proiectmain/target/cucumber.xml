@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Cucumber" time="21.397" tests="1" skipped="0" failures="0" errors="0">
+<testcase classname="All Emag.ro scenarios" name="Test what's wrong" time="21.219">
+<system-out><![CDATA[
+Given the user navigates to emag.ro page....................................passed
+When cookies appear we will accept..........................................passed
+Then we will navigate to and check Ofertele Emag page.......................passed
+Then we will add a products to favorite and try to checkout a product.......passed
+]]></system-out>
+</testcase>
+</testsuite>

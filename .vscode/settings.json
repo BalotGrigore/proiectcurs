@@ -12,4 +12,5 @@
     "cucumberautocomplete.strictGherkinCompletion": true,
     "cucumberautocomplete.smartSnippets": true,
     "cucumberautocomplete.stepsInvariants": true
+  
 }

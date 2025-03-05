@@ -35,7 +35,7 @@ public class wip {
         BackboneClass CallBackbone = new BackboneClass(driver);
 
      
-        
+      CallBackbone.OferteleEmag();  
       CallBackbone.FavProduct();
         
         

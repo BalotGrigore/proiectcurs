@@ -5,11 +5,10 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.time.LocalDate;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
+
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 @SuppressWarnings("static-access")
 
@@ -398,6 +397,8 @@ public class BackboneClass {
         // Wait and hover over favorite button and checked that it's empty
         spine.waitForAndMoveToWebElement(elements.FavoriteButton,
                 5, 2000);
+        spine.waitForAndMoveToWebElement(elements.TextFavoriteIsEmpty,
+                5, 2000);        
         assertTrue("Nu am dat hover corect",
                 elements.TextFavoriteIsEmpty.getText().contains("Adauga produsele preferate la Favorite."));
 

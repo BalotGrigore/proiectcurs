@@ -1,3 +1,53 @@
 // mail:testgrigselenium@gmail.com
 // pass:testgrig123@test.com
 // passEmag:Testgrig123@test.com
+//dedemanpass:test123#
+
+
+// Explain how we used regex and how it works
+Pentru public void GeniusDeals() 
+
+The Pattern.compile("\\d+") creates a regular expression (regex) pattern.
+\\d+ means:
+\\d → Matches any digit (0-9).
++ → Means "one or more" of the preceding character (digits in this case).
+So, this pattern will find all sequences of numbers in the string.
+
+Matcher matcher = pattern.matcher(url);
+pattern.matcher(url) creates a Matcher object that will search the URL for occurrences of numbers.
+
+// Info Regex
+What is Regex (Regular Expression)?
+Regex (Regular Expression) is a sequence of characters that defines a search pattern. It is used for string matching, searching, extracting, and replacing text in a flexible way.
+
+How Regex Works (Step by Step)
+Define a Pattern – You create a rule using special symbols.
+Apply the Pattern – The pattern is used to match, extract, or replace text.
+Process the Matches – You use the result for validation, searching, or transformation.
+
+Pattern	Description	Example Match
+\d	Any digit (0-9)	"Order 123" → 123
+\D	Any non-digit	"abc123" → abc
+\w	Any word character (a-z, A-Z, 0-9, _)	"user_42" → user_42
+\W	Any non-word character	"Hello, world!" → , !
+\s	Any whitespace (space, tab, newline)	"Hello World" → " "
+\S	Any non-whitespace	"Hello World" → HelloWorld
+.	Any single character (except newline)	"abc" → a, b, c
+^	Start of the string	"^Hello" matches "Hello world" but not "world Hello"
+$	End of the string	"world$" matches "Hello world" but not "world Hello"
+*	0 or more of the previous character	"a*" matches "", "a", "aaaa"
++	1 or more of the previous character	"a+" matches "a", "aaaa", but not ""
+?	0 or 1 of the previous character	"a?" matches "", "a"
+{n}	Exactly n repetitions	"a{3}" matches "aaa" but not "aa"
+{n,}	At least n repetitions	"a{2,}" matches "aa", "aaa", "aaaa"
+{n,m}	Between n and m repetitions	"a{2,4}" matches "aa", "aaa", "aaaa" but not "a"
+[abc]	Any one of the given characters	"b" matches "banana" but not "grape"
+[^abc]	Any character NOT listed	"[^aeiou]" matches any non-vowel character
+`(abc	xyz)`	Either abc or xyz
+
+Where is Regex Used?
+✅ Search & Replace (Find patterns in text and replace them)
+✅ Data Validation (Emails, phone numbers, passwords)
+✅ Text Extraction (Get numbers, dates, specific words)
+✅ Web Scraping (Extract useful data from web pages)
+✅ Log Analysis (Search for specific error messages)

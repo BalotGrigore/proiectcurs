@@ -22,6 +22,14 @@
     </properties>
 
     <dependencies>
+        <!-- TestNG Dependency -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.10.2</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Cucumber Java -->
         <dependency>
             <groupId>io.cucumber</groupId>
@@ -113,6 +121,26 @@
             <version>2.35.0</version>
         </dependency>
     </dependencies>
+
+<profiles>
+    <profile>
+        <id>CustomSuite</id>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.2.5</version>
+                    <configuration>
+                        <suiteXmlFiles>
+                             <suiteXmlFile>src/test/resources/SmokeSuite.xml</suiteXmlFile> <!-- Path to suite file -->
+                        </suiteXmlFiles>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
+</profiles>
 
     <build>
         <plugins>

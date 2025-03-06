@@ -4,9 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.After;
-import org.junit.Before;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import java.time.Duration;
 import proiect.grig.Backbone.BackboneClass;
 
@@ -25,10 +24,10 @@ public class AppTest {
         }
     }
 
-    public WebDriver driver;
-    //public WebDriver driver = new ChromeDriver();
+    //public WebDriver driver;
+    public WebDriver driver = new ChromeDriver();
 
-    @Before
+    @BeforeMethod 
     public void setup() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--incognito");
@@ -86,7 +85,7 @@ public class AppTest {
 
     }
 
-    @After
+    @AfterMethod 
 
     public void teardown() {
         System.out.println("Au trecut toate testele, inchidem");

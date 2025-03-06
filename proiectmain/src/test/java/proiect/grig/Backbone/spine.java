@@ -48,6 +48,13 @@ public class spine {
         return Element;
     }
 
+    public WebElement waitForAndClickWebElement(WebElement element, int timeoutSeconds, int pollingMillis) {
+        WebElement Element = waitForWebElement(driver, element, timeoutSeconds, pollingMillis);
+        assertNotNull(Element);
+        clickOnElement(Element);
+        return Element;
+    }
+    
     // Moved FluentHelper functionality here as a static method
     public static WebElement waitForElement(WebDriver driver, By by, int timeoutSeconds, int pollingIntervalMillis) {
         Wait<WebDriver> wait = new FluentWait<>(driver)

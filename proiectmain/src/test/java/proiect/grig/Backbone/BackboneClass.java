@@ -4,11 +4,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
+
 import org.openqa.selenium.By;
 
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
+import java.util.regex.*;
+import java.util.List;
 
 @SuppressWarnings("static-access")
 
@@ -91,12 +96,8 @@ public class BackboneClass {
         Openpage();
         FixCookies();
 
-        // Wait for the "Oferta Zilei" element to be present
-        WebElement wait = spine.waitForWebElement(driver, elements.OfertaZilei, 5, 2000);
-        assertNotNull(wait, "The element should be present in the DOM.");
-
-        // Click on the "Oferta Zilei" element
-        elements.OfertaZilei.click();
+        // Wait for the "Oferta Zilei" element to be present and click it
+        spine.waitForAndClickWebElement(elements.OfertaZilei, 5, 2000);
 
         // Verify that the current URL contains the expected path
         assertTrue("Nu suntem pe pagina de Oferta Zilei",
@@ -145,12 +146,8 @@ public class BackboneClass {
         Openpage();
         FixCookies();
 
-        // Wait for the "Resigilate" element to be present amd go to new page
-        WebElement wait = spine.waitForWebElement(driver, elements.Resigilate, 5, 2000);
-        assertNotNull(wait, "The element should be present in the DOM.");
-
-        // Click on the "Resigilate" element
-        elements.Resigilate.click();
+        // Wait for the "Resigilate" element to be present and click it
+        spine.waitForAndClickWebElement(elements.Resigilate, 5, 2000);
 
         // We need to switch to the new window
         driver.switchTo().window(driver.getWindowHandles().toArray()[1].toString());
@@ -173,12 +170,8 @@ public class BackboneClass {
         Openpage();
         FixCookies();
 
-        // Wait for the "Genius" element to be present
-        WebElement wait = spine.waitForWebElement(driver, elements.Genius, 5, 2000);
-        assertNotNull(wait, "The element should be present in the DOM.");
-
-        // Click on the "Genius" element
-        spine.clickOnElement(elements.Genius);
+        // Wait for the "Genius" element to be present and click it
+        spine.waitForAndClickWebElement(elements.Genius, 5, 2000);
 
         // Get the shadow host element
         WebElement shadowHost = driver.findElement(By.tagName("emag-genius"));
@@ -201,9 +194,6 @@ public class BackboneClass {
                 .findElement(By.cssSelector("div > div > div.main > div > div:nth-child(5) > button"));
         spine.clickOnElement(elm);
         System.out.println("Am apasat pe primul buton Încearcă gratuit 3 luni ");
-
-        // Accept cookies if needed
-        FixCookies();
 
         // Wait for the page to load
         try {
@@ -260,16 +250,51 @@ public class BackboneClass {
         Openpage();
         FixCookies();
 
-        // Wait for Genius Deals main menu button to be visible
-        WebElement wait = spine.waitForWebElement(driver, elements.GeniusDeals, 5, 2000);
-        assertNotNull(wait, "The element should be present in the DOM.");
+        // Wait for the "GeniusDeals" element to be visible and click it
+        spine.waitForAndClickWebElement(elements.GeniusDeals, 5, 2000);
 
-        // CLick on the Genius deals main menu button and verifiy we are on the correct
-        // page
-        spine.clickOnElement(elements.GeniusDeals);
+        String url = driver.getCurrentUrl();
         assertTrue("Nu suntem pe pagina corecta: Genius Deals ",
                 driver.getCurrentUrl().contains("https://www.emag.ro/label-campaign/genius-deals"));
         System.out.println("Suntem pe pagina de Genius Deals");
+
+        // Regular expression to match numbers
+        Pattern pattern = Pattern.compile("\\d+");
+        Matcher matcher = pattern.matcher(url);
+
+        // Store extracted numbers
+        List<Integer> numbers = new ArrayList<>();
+
+        while (matcher.find()) {
+            numbers.add(Integer.parseInt(matcher.group()));
+        }
+
+        // Get current date and offer period
+        LocalDate currentDate = LocalDate.now();
+        int year = currentDate.getYear();
+        int dayOfMonth = currentDate.getDayOfMonth();
+        int inceputoferta = numbers.get(0);
+        int sfarsitoferta = numbers.get(1);
+
+        //Validate offer year is for current year
+        boolean conditieAn = numbers.get(2) == year;
+        assertTrue("Oferta nu este pentru anul current", conditieAn);
+
+        // Validate current day is part of the offer
+        boolean conditie1 = (dayOfMonth >= inceputoferta && dayOfMonth <= sfarsitoferta);
+        assertTrue("Ziua nu este in oferta", conditie1);
+
+        // Get month
+        String romanianMonth = spine.getRomanianMonth(currentDate.getMonthValue());
+
+        // Assertion for Month and current month offer in url
+        if (!url.contains(romanianMonth)) {
+            throw new AssertionError("Offer is for the wrong month. Expected month: " + romanianMonth);
+        }
+
+        System.out.println("Oferta Emag este pe perioada " + numbers.get(0) + " - " + numbers.get(1) + " , "
+                + romanianMonth + " si azi " + dayOfMonth + " este in oferta");
+
     }
 
     public void EasyBuyBack() {
@@ -277,6 +302,9 @@ public class BackboneClass {
         // pre-requesite
         Openpage();
         FixCookies();
+
+        // For presentation to check first IF
+        //driver.manage().window().maximize();
 
         try {
             // We check to see if the element is visible in the main menu without dropdown
@@ -288,7 +316,10 @@ public class BackboneClass {
                 assertNotNull(wait, "The element should be present in the DOM.");
                 spine.clickOnElement(elements.EasyBuyBack);
                 System.out.println("Am dat click pe Easy BuyBack din main menu");
-
+                // We need an assertion for this case to validate the click
+                assertTrue("Nu suntem pe pagina corecta: Easy Buy Back ",
+                driver.getCurrentUrl().contains("https://www.emag.ro/lps/emag-flip-buyback"));
+                
                 // Else we will try dropdown method
             } else {
                 handleDropdownClick();
@@ -341,14 +372,9 @@ public class BackboneClass {
         FixCookies();
 
         try {
-            // Wait for the "Ofertele eMAG" button in the main menu to be visible and
-            // interactable
-            WebElement wait = spine.waitForWebElement(driver, elements.OferteleEmag, 5, 2000);
-            assertNotNull(wait, "The element should be present in the DOM."); // Ensure the element is found
-
-            // Click on "Ofertele eMAG" from the main menu
-            spine.clickOnElement(elements.OferteleEmag);
-            System.out.println("Am dat click pe OferteleEmag din main menu");
+            // Wait for the "Ofertele eMAG" element to be present and click it
+            spine.waitForAndClickWebElement(elements.OferteleEmag, 5, 2000);
+            
 
         } catch (Exception e) {
             // If clicking the main menu button fails, attempt to use the dropdown
@@ -357,7 +383,8 @@ public class BackboneClass {
 
         try {
             // Click on the "Vezi Mai Mult" button to expand the dropdown menu
-            spine.clickOnElement(elements.VeziMaiMult);
+            
+            spine.waitForAndClickWebElement(elements.VeziMaiMult, 5, 2000);
 
             // Check if the first dropdown version of "Ofertele eMAG" is visible
             if (elements.OferteleEmagDropdown.isDisplayed()) {
@@ -381,7 +408,41 @@ public class BackboneClass {
         System.out.println("Suntem pe pagina Ofertele eMAG");
     }
 
-    public void FavProduct() {
+    public void OferteleEmag2() {
+        // When runing only this method/test alone we will make sure we have
+        // pre-requesite
+        Openpage();
+        FixCookies();
+
+        
+        try {
+            // Wait for the "Ofertele eMAG" element to be present and click it
+            spine.waitForAndClickWebElement(elements.OferteleEmag, 5, 2000);
+
+        } catch (Exception e) {
+            // If clicking the main menu button fails, attempt to use the dropdown
+            System.out.println("Nu am putut da click pe Ofertele eMAG, incercam cu Dropdown");
+        }
+
+        try {
+            // Click on the "Vezi Mai Mult" button to expand the dropdown menu            
+            spine.waitForAndClickWebElement(elements.VeziMaiMult, 5, 2000);
+            // Click on dropdown button for Ofertele eMAG
+            spine.waitForAndClickWebElement(elements.JustUseCss, 5, 2000);
+            System.out.println("Am dat click pe OferteleEmag cu dropdown");
+
+        } catch (Exception e) {
+            // Handle the failure of clicking the dropdown options
+            System.out.println("Nu am putut da click pe Ofertele eMAG din dropdown");
+        }
+
+        // Validate that the user is redirected to the correct "Ofertele eMAG" page
+        assertTrue("Nu suntem pe pagina corecta: Ofertele eMAG ",
+                driver.getCurrentUrl().contains("https://www.emag.ro/nav/deals"));
+        System.out.println("Suntem pe pagina Ofertele eMAG");
+    }    
+        
+     public void FavProduct() {
 
         // We will naviagte or mmake sure we are on the emag.ro page
         Openpage();
@@ -398,7 +459,7 @@ public class BackboneClass {
         spine.waitForAndMoveToWebElement(elements.FavoriteButton,
                 5, 2000);
         spine.waitForAndMoveToWebElement(elements.TextFavoriteIsEmpty,
-                5, 2000);        
+                5, 2000);
         assertTrue("Nu am dat hover corect",
                 elements.TextFavoriteIsEmpty.getText().contains("Adauga produsele preferate la Favorite."));
 
@@ -439,10 +500,8 @@ public class BackboneClass {
         System.out.println("Am sters un produs din favorite");
         System.out.println("Aduga produsul ramas in cos");
 
-        // Wait for Add to cart button to be vislible and click on it
-        spine.waitForWebElement(driver, elements.AddToCart,
-                5, 2000);
-        spine.clickOnElement(elements.AddToCart);
+       // Wait for Add to cart button to be vislible and click on it
+        spine.waitForAndClickWebElement(elements.AddToCart, 5, 2000);
         System.out.println("Am dat click pe butonul de adugat produsul in cos");
 
         // Wait for element containing specific text "Produsul a fost adaugat in cos"
@@ -455,7 +514,7 @@ public class BackboneClass {
         // Wait for Vezi detali Cos text and click on Vezi detali Cos button
         spine.waitForWebElement(driver, elements.VeziDetaliiCosText, 5, 2000);
         spine.clickOnElement(elements.VeziDetaliiCosButton);
-
+        
         // Success message
         System.out.println("Am dat click pe Vezi detalii cos");
 
@@ -466,8 +525,7 @@ public class BackboneClass {
 
         // Press on continue button and try to ckeckout
         System.out.println("Incercam sa apasam pe butonul de continua");
-        spine.waitForWebElement(driver, elements.ContinuaBtn, 5, 2000);
-        spine.clickOnElement(elements.ContinuaBtn);
+        spine.waitForAndClickWebElement(elements.ContinuaBtn, 5, 2000);
 
         // We are redirected to the register page because we are not logged in the site
         spine.waitForWebElement(driver, elements.LoginPageText, 5, 2000);

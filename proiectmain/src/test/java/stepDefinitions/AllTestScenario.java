@@ -72,6 +72,7 @@ public class AllTestScenario {
     @Then("we will add a products to favorite and try to checkout a product")
     public void placeholder10() {
         CallBackbone.FavProduct();
+        driver.quit();
     }
 
 }

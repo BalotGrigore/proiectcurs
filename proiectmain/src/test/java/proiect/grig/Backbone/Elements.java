@@ -1,5 +1,7 @@
 package proiect.grig.Backbone;
 
+import java.security.PublicKey;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -63,6 +65,8 @@ public class Elements {
     WebElement OferteleEmagDropdown;
     @FindBy(xpath = "(//*[text()='Ofertele eMAG'])[2]") // OferteleEmag button from the dropdown
     WebElement OferteleEmagDropdown2;
+    @FindBy(css = "body > div.ph-widget.ph-popup.ph-dropdown-popup.ph-visible.ph-popup-s.ph-popup-w.ph-popup-bottom > div > ul > li:nth-child(6) > a")
+    WebElement JustUseCss;
 
     // FavProduct() elements
     @FindBy(css = "#my_wishlist > i") // Favorite button
@@ -108,4 +112,21 @@ public class Elements {
     @FindBy(xpath = "//*[text()='Introdu adresa de email']") // element with text
     WebElement LoginPageText;
 
+    //Dedeman.ro login  elements
+    @FindBy(css = "#notice-cookie-block > div > div.cookie-bar-inner-content > div.default-content > div.cookie-bar-section.cookie-bar-bottom > ul > li:nth-child(2) > button")
+    public WebElement AcceptCookieDedeman;
+    @FindBy(css = "#html-body > div.page-wrapper > header > div.header.content > div.flex.inner-header > div.hide-on-mobile.user-dropdowns > div > div:nth-child(2) > span > label")
+    public WebElement ContulMeu;
+    @FindBy(css = "#ui-id-2 > div > div > a.full-width.align-center.action.orange.primary.small.log-in > span")
+    public WebElement Authenticate;
+    @FindBy(id = "email-input")
+    public WebElement CampEmail;
+    @FindBy(id = "password-input")
+    public WebElement CampParola;
+    @FindBy(css = "#maincontent > div.columns > div > div.login-container > div.gigya-form-box > form > fieldset > button")
+    public WebElement ContinuaBtnDedeman;
+    @FindBy(css = "#maincontent > div.columns > div.column.main > div.page-title-wrapper > h1")
+    public WebElement ContulMeuText;
+    @FindBy(css = "#maincontent > div.columns > div > div.login-container > div.gigya-form-box > form > fieldset > div:nth-child(1) > label")
+    public WebElement textRequestCredentials;
 }

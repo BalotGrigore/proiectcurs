@@ -1,9 +1,7 @@
 <suite name="Suite Smoke Test" parallel="classes" thread-count="16">
     <test name="Smoke Suite">
         <classes>
-            <class name = "Tests.GoogleLoginTests"/>
-            <class name = "Tests.RegisterTests"/>
-
+            <class name="proiect.grig.MainTest"/> 
         </classes>
     </test>
-</suite> 
+</suite>

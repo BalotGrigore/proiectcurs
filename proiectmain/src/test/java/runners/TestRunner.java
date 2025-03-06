@@ -13,9 +13,11 @@ import org.junit.runner.RunWith;
         "junit:target/cucumber.xml" // Generates a JUnit XML report
     },
     monochrome = true, // Improves readability of console output
-    tags = "@specific"
-    //tags = "@specific"
-    //tags = "@AllTestsScenario"
+    tags = "@AllTestsScenario"
+    // Tag Options:
+    // tags = "@specific"
+    // tags = "@AllTestsScenario"
+    // tags = "@dedeman"
     
     )
 

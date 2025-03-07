@@ -1,1 +1,6 @@
 docs/* linguist-documentation
+# Force Java files to be detected as Java
+*.java linguist-language=Java
+
+# Treat all .txt files as documentation, not code
+*.txt linguist-documentation

@@ -1,11 +1,11 @@
 package proiect.grig.MainTest;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import java.time.Duration;
 import proiect.grig.Backbone.BackboneClass;
 
@@ -24,10 +24,9 @@ public class AppTest {
         }
     }
 
-    //public WebDriver driver;
-    public WebDriver driver = new ChromeDriver();
+    public WebDriver driver;
 
-    @BeforeMethod 
+    @BeforeEach
     public void setup() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--incognito");
@@ -46,18 +45,19 @@ public class AppTest {
         CallBackbone.FixCookies();
         System.out.println("Test 1 Finished");
         // Am deschis pagina si dat click pe cookies daca apar
-        
+
         CallBackbone.NavAndClick();
         System.out.println("Test 2 Finished");
         // Am navigat prin meniul de produse si am accesat pagina de televizoare
-        
+
         CallBackbone.OfertaZilei_Navigate();
         System.out.println("Test 3 Finished");
         // Am navigat catre Oferta zilei si am verificat ca e pentru ziua curenta
 
         CallBackbone.Resigilate_navigate();
         System.out.println("Test 4 Finished");
-        // Am navigat catre Resigilate si am validat ca suntem pe magina corecta gasind un elelemnt de pe pagina si page title
+        // Am navigat catre Resigilate si am validat ca suntem pe magina corecta gasind
+        // un elelemnt de pe pagina si page title
 
         CallBackbone.Genius();
         System.out.println("Test 5 Finished");
@@ -78,14 +78,14 @@ public class AppTest {
         // Am navigat catre OferteleEmag si am verificat ca suntem pe pagina corecta
         // folosind Pageurl
 
-       CallBackbone.FavProduct();
+        CallBackbone.FavProduct();
         System.out.println("Test 9 Finished");
-        // Am adaugat si sters produse la favorite, ama daugat produs in cos si am facut checkout pana la pagina de login
-       
+        // Am adaugat si sters produse la favorite, ama daugat produs in cos si am facut
+        // checkout pana la pagina de login
 
     }
 
-    @AfterMethod 
+    @AfterEach
 
     public void teardown() {
         System.out.println("Au trecut toate testele, inchidem");

@@ -276,7 +276,7 @@ public class BackboneClass {
         int inceputoferta = numbers.get(0);
         int sfarsitoferta = numbers.get(1);
 
-        //Validate offer year is for current year
+        // Validate offer year is for current year
         boolean conditieAn = numbers.get(2) == year;
         assertTrue("Oferta nu este pentru anul current", conditieAn);
 
@@ -304,7 +304,7 @@ public class BackboneClass {
         FixCookies();
 
         // For presentation to check first IF
-        //driver.manage().window().maximize();
+        // driver.manage().window().maximize();
 
         try {
             // We check to see if the element is visible in the main menu without dropdown
@@ -318,8 +318,8 @@ public class BackboneClass {
                 System.out.println("Am dat click pe Easy BuyBack din main menu");
                 // We need an assertion for this case to validate the click
                 assertTrue("Nu suntem pe pagina corecta: Easy Buy Back ",
-                driver.getCurrentUrl().contains("https://www.emag.ro/lps/emag-flip-buyback"));
-                
+                        driver.getCurrentUrl().contains("https://www.emag.ro/lps/emag-flip-buyback"));
+
                 // Else we will try dropdown method
             } else {
                 handleDropdownClick();
@@ -374,7 +374,6 @@ public class BackboneClass {
         try {
             // Wait for the "Ofertele eMAG" element to be present and click it
             spine.waitForAndClickWebElement(elements.OferteleEmag, 5, 2000);
-            
 
         } catch (Exception e) {
             // If clicking the main menu button fails, attempt to use the dropdown
@@ -383,7 +382,7 @@ public class BackboneClass {
 
         try {
             // Click on the "Vezi Mai Mult" button to expand the dropdown menu
-            
+
             spine.waitForAndClickWebElement(elements.VeziMaiMult, 5, 2000);
 
             // Check if the first dropdown version of "Ofertele eMAG" is visible
@@ -414,7 +413,6 @@ public class BackboneClass {
         Openpage();
         FixCookies();
 
-        
         try {
             // Wait for the "Ofertele eMAG" element to be present and click it
             spine.waitForAndClickWebElement(elements.OferteleEmag, 5, 2000);
@@ -425,7 +423,7 @@ public class BackboneClass {
         }
 
         try {
-            // Click on the "Vezi Mai Mult" button to expand the dropdown menu            
+            // Click on the "Vezi Mai Mult" button to expand the dropdown menu
             spine.waitForAndClickWebElement(elements.VeziMaiMult, 5, 2000);
             // Click on dropdown button for Ofertele eMAG
             spine.waitForAndClickWebElement(elements.JustUseCss, 5, 2000);
@@ -440,9 +438,9 @@ public class BackboneClass {
         assertTrue("Nu suntem pe pagina corecta: Ofertele eMAG ",
                 driver.getCurrentUrl().contains("https://www.emag.ro/nav/deals"));
         System.out.println("Suntem pe pagina Ofertele eMAG");
-    }    
-        
-     public void FavProduct() {
+    }
+
+    public void FavProduct() {
 
         // We will naviagte or mmake sure we are on the emag.ro page
         Openpage();
@@ -500,7 +498,7 @@ public class BackboneClass {
         System.out.println("Am sters un produs din favorite");
         System.out.println("Aduga produsul ramas in cos");
 
-       // Wait for Add to cart button to be vislible and click on it
+        // Wait for Add to cart button to be vislible and click on it
         spine.waitForAndClickWebElement(elements.AddToCart, 5, 2000);
         System.out.println("Am dat click pe butonul de adugat produsul in cos");
 
@@ -514,7 +512,7 @@ public class BackboneClass {
         // Wait for Vezi detali Cos text and click on Vezi detali Cos button
         spine.waitForWebElement(driver, elements.VeziDetaliiCosText, 5, 2000);
         spine.clickOnElement(elements.VeziDetaliiCosButton);
-        
+
         // Success message
         System.out.println("Am dat click pe Vezi detalii cos");
 

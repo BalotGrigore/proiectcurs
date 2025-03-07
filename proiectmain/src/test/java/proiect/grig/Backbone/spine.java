@@ -54,7 +54,7 @@ public class spine {
         clickOnElement(Element);
         return Element;
     }
-    
+
     // Moved FluentHelper functionality here as a static method
     public static WebElement waitForElement(WebDriver driver, By by, int timeoutSeconds, int pollingIntervalMillis) {
         Wait<WebDriver> wait = new FluentWait<>(driver)
@@ -68,7 +68,6 @@ public class spine {
         });
     }
 
-   
     public static WebElement waitForWebElement(WebDriver driver, WebElement element, int timeoutSeconds,
             int pollingIntervalMillis) {
         Wait<WebDriver> wait = new FluentWait<>(driver)

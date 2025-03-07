@@ -1,7 +1,5 @@
 package proiect.grig.Backbone;
 
-
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -112,7 +110,7 @@ public class Elements {
     @FindBy(xpath = "//*[text()='Introdu adresa de email']") // element with text
     WebElement LoginPageText;
 
-    //Dedeman.ro login  elements
+    // Dedeman.ro login elements
     @FindBy(css = "#notice-cookie-block > div > div.cookie-bar-inner-content > div.default-content > div.cookie-bar-section.cookie-bar-bottom > ul > li:nth-child(2) > button")
     public WebElement AcceptCookieDedeman;
     @FindBy(css = "#html-body > div.page-wrapper > header > div.header.content > div.flex.inner-header > div.hide-on-mobile.user-dropdowns > div > div:nth-child(2) > span > label")

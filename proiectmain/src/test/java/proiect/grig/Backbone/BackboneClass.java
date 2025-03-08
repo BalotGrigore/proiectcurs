@@ -206,6 +206,7 @@ public class BackboneClass {
         WebElement GreenScroll = shadowRoot.findElement(By.cssSelector(
                 "div > div > div.main > div > div._savingsCalculator_racfl_1._savingsCalculator_1b9w7_161 > fieldset > div:nth-child(5) > label > div._savingsCalculatorInput_682cl_1._input_racfl_42 > input[type=range]"));
         spine.moveToElement(GreenScroll);
+        
         // Get initial price and parse to double
         WebElement InitialPrice = shadowRoot.findElement(By.cssSelector(
                 "div > div > div.main > div > div._savingsCalculator_racfl_1._savingsCalculator_1b9w7_161 > div._outputPrice_racfl_53 > span > span > span > span:nth-child(1)"));
@@ -264,7 +265,6 @@ public class BackboneClass {
 
         // Store extracted numbers
         List<Integer> numbers = new ArrayList<>();
-
         while (matcher.find()) {
             numbers.add(Integer.parseInt(matcher.group()));
         }

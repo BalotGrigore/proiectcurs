@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Cucumber" time="58.843" tests="2" skipped="0" failures="0" errors="0">
-<testcase classname="Succesfully login into Dedeman.ro" name="Login into dedeman.ro with pre-registered account - Example #1.1" time="15.247">
+<testsuite name="Cucumber" time="60.053" tests="2" skipped="0" failures="0" errors="0">
+<testcase classname="Succesfully login into Dedeman.ro" name="Login into dedeman.ro with pre-registered account - Example #1.1" time="16.954">
 <system-out><![CDATA[
 Given we navigate to Dedeman.ro page........................................passed
 When cookies appear we accept them..........................................passed
@@ -11,7 +11,7 @@ Then we press continue......................................................pass
 Then we will succesfully reach contul meu page..............................passed
 ]]></system-out>
 </testcase>
-<testcase classname="All Emag.ro scenarios" name="Navigate all Main Meniu pages" time="43.432">
+<testcase classname="All Emag.ro scenarios" name="Navigate all Main Meniu pages" time="42.934">
 <system-out><![CDATA[
 Given the user navigates to emag.ro page....................................passed
 When cookies appear we will accept..........................................passed

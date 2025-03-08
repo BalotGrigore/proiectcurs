@@ -13,3 +13,7 @@ Feature: Succesfully login into Dedeman.ro
       | username | password  |
       | testgrigselenium@gmail.com | Test123# |
       
+
+
+
+      

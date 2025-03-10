@@ -36,7 +36,7 @@ public class wip {
         BackboneClass CallBackbone = new BackboneClass(driver);
 
         //CallBackbone.OfertaZilei_Navigate();
-        CallBackbone.EasyBuyBack();
+        CallBackbone.Genius();
     }
 
     @AfterEach

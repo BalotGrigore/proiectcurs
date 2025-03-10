@@ -75,7 +75,7 @@ public class Elements {
     WebElement TextFavoriteIsEmpty;
     @FindBy(xpath = "//*[contains(@class, 'add-to-favorites btn')]") // First product on the page favorite button
     WebElement ProductFavButton;
-    @FindBy(xpath = "(//*[contains(@class, 'add-to-favorites btn')])[2]") // First product on the page favorite button
+    @FindBy(xpath = "(//*[contains(@class, 'add-to-favorites btn')])[3]") // First product on the page favorite button
     WebElement ProductFavButton2;
     @FindBy(css = "body > div.ns-wrap-top-right > div > div > div > div > div.table-cell.col-xs-9") // Favorite product
                                                                                                     // added

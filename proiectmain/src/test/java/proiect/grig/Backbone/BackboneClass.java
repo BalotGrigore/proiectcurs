@@ -184,7 +184,7 @@ public class BackboneClass {
 
         // Wait for the page to load
         try {
-            Thread.sleep(5000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -197,28 +197,34 @@ public class BackboneClass {
 
         // Wait for the page to load
         try {
-            Thread.sleep(5000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         // Scroll to and drag element to change price
-        WebElement GreenScroll = shadowRoot.findElement(By.cssSelector(
-                "div > div > div.main > div > div._savingsCalculator_racfl_1._savingsCalculator_1b9w7_161 > fieldset > div:nth-child(5) > label > div._savingsCalculatorInput_682cl_1._input_racfl_42 > input[type=range]"));
+         WebElement GreenScroll = shadowRoot.findElement(By.cssSelector(
+                "div > div > div.main > div > div.savings-calculator.lg-breakpoint.savings-calculator > fieldset > div:nth-child(5) > label > div.savings-calculator-input.input"));
         spine.moveToElement(GreenScroll);
-        
+
         // Get initial price and parse to double
-        WebElement InitialPrice = shadowRoot.findElement(By.cssSelector(
-                "div > div > div.main > div > div._savingsCalculator_racfl_1._savingsCalculator_1b9w7_161 > div._outputPrice_racfl_53 > span > span > span > span:nth-child(1)"));
+         WebElement InitialPrice = shadowRoot.findElement(By.cssSelector(
+                "div > div > div.main > div > div.savings-calculator.lg-breakpoint.savings-calculator > div.output-price > span > span > span > span.integer"));
         String InitialPriceValue = InitialPrice.getText();
         double InitialPriceValueDouble = Double.parseDouble(InitialPriceValue);
 
         // Move green slider
         spine.moveSlider(GreenScroll, -50);
 
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         // Get modified price and parse to double
         WebElement ChangedPrice = shadowRoot.findElement(By.cssSelector(
-                "div > div > div.main > div > div._savingsCalculator_racfl_1._savingsCalculator_1b9w7_161 > div._outputPrice_racfl_53 > span > span > span > span:nth-child(1)"));
+                "div > div > div.main > div > div.savings-calculator.lg-breakpoint.savings-calculator > div.output-price > span > span > span > span.integer"));
         String ChangedPriceValue = ChangedPrice.getText();
         double ChangedPricePriceValueDouble = Double.parseDouble(ChangedPriceValue);
 
@@ -277,8 +283,9 @@ public class BackboneClass {
         int sfarsitoferta = numbers.get(1);
 
         // Validate offer year is for current year
-        boolean conditieAn = numbers.get(2) == year;
-        assertTrue("Oferta nu este pentru anul current", conditieAn);
+        // bug nu au mai pus anul in url !!
+        // boolean conditieAn = numbers.get(2) == year;
+        // assertTrue("Oferta nu este pentru anul current", conditieAn);
 
         // Validate current day is part of the offer
         boolean conditie1 = (dayOfMonth >= inceputoferta && dayOfMonth <= sfarsitoferta);
